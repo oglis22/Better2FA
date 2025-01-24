@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Flask Webserver
+  web:
+    build: .
+    container_name: better2fa_web
+    ports:
+      - "5000:5000"
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - QUARANTINE_ROLE=${QUARANTINE_ROLE}
+      - LOG_CHANNEL_ID=${LOG_CHANNEL_ID}
+      - DEBUG=${DEBUG}
+    volumes:
+      - .:/app
+    networks:
+      - better2fa_network
+
+  # Discord Bot
+  bot:
+    build: .
+    container_name: better2fa_bot
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - QUARANTINE_ROLE=${QUARANTINE_ROLE}
+      - LOG_CHANNEL_ID=${LOG_CHANNEL_ID}
+      - DEBUG=${DEBUG}
+    command: python main.py
+    networks:
+      - better2fa_network
+
+networks:
+  better2fa_network:
+    driver: bridge
