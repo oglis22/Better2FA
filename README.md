@@ -34,7 +34,7 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
 
    ```env
     DISCORD_TOKEN=
-    DEBUG=TRUE
+    DEBUG=
     SUSPICIOUSLY_NEW_ACCOUNT_IN_DAYS=
     QUARANTINE_ROLE=
     LOG_CHANNEL_ID=
