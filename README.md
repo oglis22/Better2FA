@@ -38,4 +38,10 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
     SUSPICIOUSLY_NEW_ACCOUNT_IN_DAYS=
     QUARANTINE_ROLE=
     LOG_CHANNEL_ID=
+    VERIFY_ROLE=
+    VERIFY_LINK_CHANNEL=
+    CLIENT_ID=
+    CLIENT_SECRET=
+    DISCORD_AUTH_LINK=
+    REDIRECT_URI=
    ```
