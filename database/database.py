@@ -16,12 +16,12 @@ def setup():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS bans (
         discord_id INT PRIMARY KEY,
+        ip VARCHAR(255),
         startdate VARCHAR(255)
     );
     ''')
 
     conn.commit()
-
 
 def register_user(discord_id: int, ip: str, token: str):
     cursor.execute('''
@@ -31,31 +31,46 @@ def register_user(discord_id: int, ip: str, token: str):
 
     conn.commit()
 
-    print(f"Client with discord {discord_id} was registerd.")
+    print(f"Client with Discord-ID {discord_id} was registered.")
 
-
-def ban(discord_id: int):
+def ban(discord_id: int, ip: str):
     startdate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     cursor.execute('''
-    INSERT OR REPLACE INTO bans (discord_id, startdate) 
-    VALUES (?, ?);
-    ''', (discord_id, startdate))
+    INSERT OR REPLACE INTO bans (discord_id, ip, startdate) 
+    VALUES (?, ?, ?);
+    ''', (discord_id, ip, startdate))
 
     conn.commit()
 
-    print(f"Client with Discord-ID {discord_id} was registerd at {startdate}")
+    print(f"Client with Discord-ID {discord_id} and IP {ip} was banned at {startdate}.")
 
-def is_banned(discord_id: int):
+def is_banned_by_discord_id(discord_id: int):
     cursor.execute('''
     SELECT startdate FROM bans WHERE discord_id = ?;
     ''', (discord_id,))
     result = cursor.fetchone()
 
+    return result is not None
+
+def is_banned_by_ip(ip: str):
+    cursor.execute('''
+    SELECT startdate FROM bans WHERE ip = ?;
+    ''', (ip,))
+    result = cursor.fetchone()
+
+    return result is not None
+
+def get_user_by_id(discord_id: int):
+    cursor.execute('''
+    SELECT discord_id, ip, token FROM user WHERE discord_id = ?;
+    ''', (discord_id,))
+    result = cursor.fetchone()
+
     if result:
-        return True
+        return {"discord_id": result[0], "ip": result[1], "token": result[2]}
     else:
-        return False
+        return None
 
 def close():
     conn.close()

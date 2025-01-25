@@ -44,4 +44,6 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
     CLIENT_SECRET=
     DISCORD_AUTH_LINK=
     REDIRECT_URI=
+    GUILD_ID=
+    INVITE_LINK=
    ```

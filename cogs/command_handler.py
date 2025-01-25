@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
+from database import database
 
 async def banip(ctx, user: discord.User):
-    # TODO: Handle command interaction
+    tfauser = database.get_user_by_id(user.id)
+    database.ban(discord_id=user.id, ip=tfauser.get('ip'))
     pass
 
 def setup_commands(bot: commands.Bot):
