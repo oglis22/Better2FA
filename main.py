@@ -6,6 +6,7 @@ from web.web_server import app
 from cogs.bot import bot
 from cogs.command_handler import setup_commands
 from cogs.event_manager import setup_events
+from database import database
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')

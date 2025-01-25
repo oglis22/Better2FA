@@ -4,6 +4,7 @@ import os
 from utils.utils import log_message
 from setup import setup
 
+
 qu_role_id = os.getenv('QUARANTINE_ROLE')
 log_channel_id = os.getenv('LOG_CHANNEL_ID')
 

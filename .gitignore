@@ -2,3 +2,4 @@
 .venv
 .idea
 notes.txt
+db/*
