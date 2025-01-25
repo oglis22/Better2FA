@@ -47,3 +47,4 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
     GUILD_ID=
     INVITE_LINK=
    ```
+(still in development)
