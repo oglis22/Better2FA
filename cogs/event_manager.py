@@ -3,7 +3,7 @@ from cogs.discord_authentication import is_account_suspicious
 import os
 from utils.utils import log_message
 from setup import setup
-
+from log import Logger
 
 qu_role_id = os.getenv('QUARANTINE_ROLE')
 log_channel_id = os.getenv('LOG_CHANNEL_ID')
@@ -23,3 +23,5 @@ def setup_events(bot: discord.Client):
             await member.add_roles(role)
             log_channel = bot.get_channel(int(log_channel_id))
             await log_message(log_channel,'Log Message' ,f"Suspicious user joined the server and got blocked {member.name}:{member.id}")
+            logger = Logger.setup_logger()
+            logger.info(f"Suspicious user joined the server and got blocked {member.name}:{member.id}")

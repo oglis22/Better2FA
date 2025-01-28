@@ -7,6 +7,7 @@ from utils import whitelist_config
 from database import database
 from cogs import discord_authentication
 from browser_fingerprint import browser_token
+from log import Logger
 
 app = Flask(__name__, template_folder='templates')
 
@@ -15,7 +16,8 @@ database.setup()
 @app.route('/authentication')
 def authenticate():
     client_ip = request.remote_addr
-    print(f"New Authentication from: {client_ip}")
+    logger = Logger.setup_logger()
+    logger.info("New Authentication from: {client_ip}")
 
     data = oauth_handler.exchange_code(request.args.get('code'))
     white_list = whitelist_config.get_whitelist()
@@ -27,17 +29,19 @@ def authenticate():
         return redirect(os.getenv("INVITE_LINK"))
 
     if ip2proxy.check_address(client_ip) or database.is_banned_by_ip(client_ip):
+        logger.info("Detected Bad Client-IP (VPN or Proxy): " + client_ip)
         return render_template('index.html')
 
     user = database.get_user_by_id(user_data['id'])
     if user:
         if not saved_web_token or user.get('token') != saved_web_token:
+            logger.info("Detected Bad Web-Token" + user_data['id'])
             return render_template('index.html')
 
     web_token = browser_token.generate_token()
     database.register_user(discord_id=user_data['id'], ip=client_ip, token=web_token)
     discord_authentication.authenticate(user_data['id'])
-
+    logger.info("Saved new user data ip: " + client_ip + " id: " + user_data['id'])
     resp = make_response(redirect(os.getenv("INVITE_LINK")))
     resp.set_cookie('token', web_token, max_age=60*60*24*365*10)
 
