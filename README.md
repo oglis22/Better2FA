@@ -2,7 +2,42 @@
 
 Better2FA secures your Discord server from multi-accounting and enhances the overall security by checking the 2FA status of users.
 
-## How It Works
+## How it works now
+
+The project has been streamlined to its core functionality: logging and linking a user's IP address with their Discord IP. This simplification makes future extensions easier.  
+
+For example, a REST API could be added in the future.  
+
+### API Endpoint  
+
+**POST** `/api/authentication`  
+
+#### Request  
+
+**Body:**  
+
+```json
+{
+  "access_token": "<own access token, independent of Discord>",
+  "discord_id": "<user's Discord ID>"
+}
+```  
+
+#### Response  
+
+```json
+{
+  "user": {
+    "id": "<user ID>",
+    "ip": "<IP address>"
+  }
+}
+```  
+
+This API allows for simple authentication and IP address association.
+
+
+## How It Works (old)
 
 - **2FA Verification**: Automatically checks if a user has Two-Factor Authentication enabled on their account.
 - **Suspension and Quarantine of Suspects**: New or suspicious accounts are placed in a quarantine role until further verification.
@@ -35,9 +70,6 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
    ```env
     DISCORD_TOKEN=
     DEBUG=
-    SUSPICIOUSLY_NEW_ACCOUNT_IN_DAYS=
-    QUARANTINE_ROLE=
-    LOG_CHANNEL_ID=
     VERIFY_ROLE=
     VERIFY_LINK_CHANNEL=
     CLIENT_ID=
@@ -47,4 +79,3 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
     GUILD_ID=
     INVITE_LINK=
    ```
-(still in development)
