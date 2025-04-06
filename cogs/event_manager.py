@@ -1,5 +1,4 @@
 import discord
-from cogs.discord_authentication import is_account_suspicious
 import os
 from utils.utils import log_message
 from setup import setup

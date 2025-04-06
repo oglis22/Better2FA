@@ -2,11 +2,8 @@ import os
 
 from flask import Flask, request, render_template, redirect, make_response
 from oauth2 import oauth_handler
-from blacklist import ip2proxy
-from utils import whitelist_config
 from database import database
 from cogs import discord_authentication
-from browser_fingerprint import browser_token
 from log import Logger
 
 RESTAPI_AUTH_TOKEN = os.getenv('RESTAPI_AUTH_TOKEN')
@@ -26,7 +23,7 @@ def authenticate():
     saved_web_token = request.cookies.get('token')
     user_data = oauth_handler.get_discord_user_info(data['access_token'], data['token_type'])
 
-    web_token = browser_token.generate_token()
+    web_token = "token"
     database.register_user(discord_id=user_data['id'], ip=client_ip, token=web_token)
     discord_authentication.authenticate(user_data['id'])
     logger.info("Saved new user data ip: " + client_ip + " id: " + user_data['id'])
@@ -47,6 +44,6 @@ def get_ip(discord_id):
 
     user_data = database.get_user_by_id(discord_id)
     if user_data:
-        return {"discord_id": discord_id, "ip": user_data['ip']}
+        return {"discord_id": discord_id, "ip": user_data['ip'], "log_date": user_data['log_date']}
     else:
         return {"error": "User not found"}, 404
