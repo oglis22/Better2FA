@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-conn = sqlite3.connect('./db/bans.db', check_same_thread=False)
+conn = sqlite3.connect('./db/db.db', check_same_thread=False)
 cursor = conn.cursor()
 
 def setup():
