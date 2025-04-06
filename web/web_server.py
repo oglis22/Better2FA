@@ -9,6 +9,8 @@ from cogs import discord_authentication
 from browser_fingerprint import browser_token
 from log import Logger
 
+RESTAPI_AUTH_TOKEN = os.getenv('RESTAPI_AUTH_TOKEN')
+
 app = Flask(__name__, template_folder='templates')
 
 database.setup()
@@ -32,3 +34,19 @@ def authenticate():
     resp.set_cookie('token', web_token, max_age=60*60*24*365*10)
 
     return resp
+
+@app.route('/get_ip/<discord_id>')
+def get_ip(discord_id):
+    logger = Logger.setup_logger()
+    logger.info(f"IP lookup request for Discord ID: {discord_id}")
+
+    auth_token = request.headers.get('Authorization')
+    if not auth_token == RESTAPI_AUTH_TOKEN:
+        logger.warning("Unauthorized access attempt")
+        return {"error": "Unauthorized"}, 401
+
+    user_data = database.get_user_by_id(discord_id)
+    if user_data:
+        return {"discord_id": discord_id, "ip": user_data['ip']}
+    else:
+        return {"error": "User not found"}, 404
