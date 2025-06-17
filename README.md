@@ -4,7 +4,7 @@ Better2FA secures your Discord server from multi-accounting and enhances the ove
 
 ## How it works now
 
-The project has been streamlined to its core functionality: logging and linking a user's IP address with their Discord IP. This simplification makes future extensions easier.  
+The project has been streamlined to its core functionality: logging and linking a user's IP address with their Discord ID. This simplification makes future extensions easier.  
 
 For example, a REST API could be added in the future.  
 
